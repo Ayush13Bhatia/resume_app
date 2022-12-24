@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:resume_app1/db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
 import '../model/resume_model.dart';
 
 class ViewScreen extends StatefulWidget {
-  ViewScreen({Key? key}) : super(key: key);
+  const ViewScreen({Key? key}) : super(key: key);
 
   @override
   State<ViewScreen> createState() => _ViewScreenState();
@@ -12,10 +15,22 @@ class ViewScreen extends StatefulWidget {
 
 class _ViewScreenState extends State<ViewScreen> {
   late List<Resume>? resume = [];
+  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    readResume();
+
+    super.initState();
+  }
+
+  Future<void> readResume() async {
+    resume = await SQLHelper.personQuery();
+    print(resume.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: AppBar().preferredSize,
@@ -71,10 +86,16 @@ class _ViewScreenState extends State<ViewScreen> {
               height: 7,
             ),
             Row(
-              children: const [
-                Text(
-                  'Total: 0',
+              children: [
+                const Text(
+                  'Total: ',
                   style: TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
+                Text(
+                  "${resume?.length}",
+                  style: const TextStyle(
                     fontSize: 17,
                   ),
                 ),
@@ -93,22 +114,25 @@ class _ViewScreenState extends State<ViewScreen> {
                         leading: Container(
                           width: 50.0,
                           height: 50.0,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            // image:
-                            // DecorationImage(
-                            //     fit: BoxFit.fill, image: MemoryImage(_bytesImage!)
-                            //   // Image.asset(imgConvert(widget.image))
-                            //
-                            // ),
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: MemoryImage(
+                                  base64Decode(
+                                    "${resume![index].resumePdf}",
+                                  ),
+                                )
+                                // Image.asset(imgConvert(widget.image))
+                                ),
                           ),
                         ),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              " widget.name!",
-                              style: TextStyle(
+                              '${resume![index].name}',
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),

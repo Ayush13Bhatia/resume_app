@@ -25,4 +25,11 @@ class SQLHelper {
     final id = db.insert(Query.resumeTable, resume.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
+
+  static Future<List<Resume>> personQuery() async {
+    Database db = await initializeSqlDB();
+    final pr = await db.query(Query.resumeTable);
+    // return pr
+    return pr.map((e) => Resume.fromJson(e)).toList();
+  }
 }

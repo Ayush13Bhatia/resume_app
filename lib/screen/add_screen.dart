@@ -37,13 +37,8 @@ class _AddScreenState extends State<AddScreen> {
   String? gender;
   String? skill;
   String? resumePdf;
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  String? profilePic;
+  String? image1;
 
   convertBaseImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -52,16 +47,22 @@ class _AddScreenState extends State<AddScreen> {
     );
     if (result != null) {
       PlatformFile? files = result.files.first;
-      print(files.path);
       final bytes = await File(files.path ?? "").readAsBytes();
-      print('object 1');
       String img64 = base64Encode(bytes);
-      print('object 2');
-      print(img64.substring(0, 100));
+      // print(img64.substring(0, 100));
       final img65 = base64Decode(img64);
-      print('object 3');
-      print(img65.sublist(1, 100));
-      print('object 4');
+      // print(img65.sublist(1, 100));
+
+      setState(() {
+        resumePdf = img64;
+      });
+      print(resumePdf);
+      print('Object11');
+      // print(resumePdf);
+      // print('Object12');
+      // print('Object13');
+      // print(profilePic);
+      // print('Object14');
       return img65;
     }
     // final image = result.toString();
@@ -70,8 +71,9 @@ class _AddScreenState extends State<AddScreen> {
 
   @override
   void initState() {
-    genderController.text = '';
-    skillsController.text = '';
+    // genderController.text = '';
+    // skillsController.text = '';
+    // resumePdf = '';
 
     // gender = 'Male';
     // TODO: implement initState
@@ -90,16 +92,18 @@ class _AddScreenState extends State<AddScreen> {
                 if (_formKey.currentState!.validate()) {
                   return _addItems(
                     Resume(
-                        name: nameController.text,
-                        currentCTC: currentCTCController.text,
-                        expectedCTC: expectedCTCController.text,
-                        gender: gender,
-                        skils: skill,
-                        createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text)
+                      name: nameController.text,
+                      currentCTC: currentCTCController.text,
+                      expectedCTC: expectedCTCController.text,
+                      gender: gender,
+                      skils: skill,
+                      resumePdf: resumePdf,
+                      image: profilePic,
+                      // createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text)
 
-                        // createdTime: widget.resume!.createdTime,
-                        // DateFormat("dd-MM-yyy").format(Resume()) as DateTime,
-                        ),
+                      // createdTime: widget.resume!.createdTime,
+                      // DateFormat("dd-MM-yyy").format(Resume()) as DateTime,
+                    ),
                   );
                 }
                 print("Pressed");
@@ -155,43 +159,43 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: const [
-                    Text("BOD"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  readOnly: true,
-                  controller: dobController,
-                  decoration: InputDecoration(
-                    suffixIcon: GestureDetector(
-                      onTap: () async {
-                        // ShowDateWidget.showDate(context) as DateTime?;
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
-
-                        String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
-
-                        dobController.text = formattedDate;
-                      },
-                      child: const Icon(
-                        Icons.calendar_month,
-                      ),
-                    ),
-                    border: const OutlineInputBorder(),
-                    hintText: "DOB",
-                    // labelText:  ,
-                  ),
-                  onChanged: (val) {
-                    setState(() {
-                      // TODO: implement date format changes
-                    });
-                  },
-                ),
+                // Row(
+                //   children: const [
+                //     Text("BOD"),
+                //     Text(
+                //       "*",
+                //       style: TextStyle(color: Colors.red),
+                //     ),
+                //   ],
+                // ),
+                // TextFormField(
+                //   readOnly: true,
+                //   controller: dobController,
+                //   decoration: InputDecoration(
+                //     suffixIcon: GestureDetector(
+                //       onTap: () async {
+                //         // ShowDateWidget.showDate(context) as DateTime?;
+                //         DateTime? pickedDate = await showDatePicker(
+                //             context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
+                //
+                //         String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
+                //
+                //         dobController.text = formattedDate;
+                //       },
+                //       child: const Icon(
+                //         Icons.calendar_month,
+                //       ),
+                //     ),
+                //     border: const OutlineInputBorder(),
+                //     hintText: "DOB",
+                //     // labelText:  ,
+                //   ),
+                //   onChanged: (val) {
+                //     setState(() {
+                //       // TODO: implement date format changes
+                //     });
+                //   },
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -231,8 +235,8 @@ class _AddScreenState extends State<AddScreen> {
                                   });
                                 },
                                 items: const [
-                                  DropdownMenuItem(value: 'Male', child: Text('Male')),
-                                  DropdownMenuItem(value: 'Female', child: Text('Female')),
+                                  DropdownMenuItem(value: '1', child: Text('Male')),
+                                  DropdownMenuItem(value: '2', child: Text('Female')),
                                 ]),
                           ),
                         );
@@ -294,7 +298,8 @@ class _AddScreenState extends State<AddScreen> {
                   onTap: () {
                     convertBaseImage();
                     // pickPDF(resumePdf);
-                    print('Resume');
+                    print("resume");
+                    print(resumePdf);
                   },
                   child: DottedBorder(
                     borderType: BorderType.RRect,
@@ -339,6 +344,8 @@ class _AddScreenState extends State<AddScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    // convertBaseImage(img1: profilePic);
+                    // print(profilePic);
                     // pickImage(img);
                   },
                   child: DottedBorder(

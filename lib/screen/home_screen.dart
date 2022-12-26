@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ElevatedButton.icon(
-              onPressed: () => Get.to(ViewScreen()),
+              onPressed: () => Get.to(const ViewScreen()),
               icon: const Icon(
                 Icons.remove_red_eye,
                 color: Colors.white,

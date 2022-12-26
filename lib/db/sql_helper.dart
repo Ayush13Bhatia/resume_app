@@ -29,7 +29,16 @@ class SQLHelper {
   static Future<List<Resume>> personQuery() async {
     Database db = await initializeSqlDB();
     final pr = await db.query(Query.resumeTable);
-    // return pr
     return pr.map((e) => Resume.fromJson(e)).toList();
+  }
+
+  static Future<void> deleteDB() async {
+    Database db = await initializeSqlDB();
+    await db.delete(Query.resumeTable);
+  }
+
+  static Future<void> deleteItem(int id) async {
+    Database db = await initializeSqlDB();
+    await db.delete(Query.resumeTable, where: "id=$id");
   }
 }

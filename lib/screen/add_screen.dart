@@ -9,6 +9,8 @@ import '../components/app_bar_widget.dart';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
+import '../components/resume_text_form_widget.dart';
+import '../components/star_form_widget.dart';
 import '../db/sql_helper.dart';
 
 import '../model/resume_model.dart';
@@ -51,19 +53,6 @@ class _AddScreenState extends State<AddScreen> {
       String img64 = base64Encode(bytes);
       return img64;
     }
-    // final image = result.toString();
-    // final bytes = await result?.readAsBytes();
-  }
-
-  @override
-  void initState() {
-    // genderController.text = '';
-    // skillsController.text = '';
-    // resumePdf = '';
-
-    // gender = 'Male';
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
@@ -78,18 +67,18 @@ class _AddScreenState extends State<AddScreen> {
                 if (_formKey.currentState!.validate()) {
                   return _addItems(
                     Resume(
-                      name: nameController.text,
-                      currentCTC: currentCTCController.text,
-                      expectedCTC: expectedCTCController.text,
-                      gender: gender,
-                      skils: skill,
-                      resumePdf: resumePdf,
-                      image: profilePic,
-                      // createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text)
+                        name: nameController.text,
+                        currentCTC: currentCTCController.text,
+                        expectedCTC: expectedCTCController.text,
+                        gender: gender,
+                        skils: skill,
+                        resumePdf: resumePdf,
+                        image: profilePic,
+                        createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text)
 
-                      // createdTime: widget.resume!.createdTime,
-                      // DateFormat("dd-MM-yyy").format(Resume()) as DateTime,
-                    ),
+                        // createdTime: widget.resume!.createdTime,
+                        // DateFormat("dd-MM-yyy").format(Resume()) as DateTime,
+                        ),
                   );
                 }
                 print("Pressed");
@@ -119,80 +108,52 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: const [
-                    Text("Name"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
+                TextFormWidget(
+                  controller: nameController,
+                  name: "Name",
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const StarFormWidget(
+                  name: "DOB",
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter the text";
-                    }
-                    return null;
-                  },
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Name",
-                  ),
-                  onChanged: (val) {},
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // Row(
-                //   children: const [
-                //     Text("BOD"),
-                //     Text(
-                //       "*",
-                //       style: TextStyle(color: Colors.red),
-                //     ),
-                //   ],
-                // ),
-                // TextFormField(
-                //   readOnly: true,
-                //   controller: dobController,
-                //   decoration: InputDecoration(
-                //     suffixIcon: GestureDetector(
-                //       onTap: () async {
-                //         // ShowDateWidget.showDate(context) as DateTime?;
-                //         DateTime? pickedDate = await showDatePicker(
-                //             context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
-                //
-                //         String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
-                //
-                //         dobController.text = formattedDate;
-                //       },
-                //       child: const Icon(
-                //         Icons.calendar_month,
-                //       ),
-                //     ),
-                //     border: const OutlineInputBorder(),
-                //     hintText: "DOB",
-                //     // labelText:  ,
-                //   ),
-                //   onChanged: (val) {
-                //     setState(() {
-                //       // TODO: implement date format changes
-                //     });
-                //   },
-                // ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: const [
-                    Text("Gender"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
+                  readOnly: true,
+                  controller: dobController,
+                  decoration: InputDecoration(
+                    suffixIcon: GestureDetector(
+                      onTap: () async {
+                        // ShowDateWidget.showDate(context) as DateTime?;
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
+
+                        String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
+
+                        dobController.text = formattedDate;
+                      },
+                      child: const Icon(
+                        Icons.calendar_month,
+                      ),
                     ),
-                  ],
+                    border: const OutlineInputBorder(),
+                    hintText: "DOB",
+                    // labelText:  ,
+                  ),
+                  onChanged: (val) {
+                    setState(() {
+                      // TODO: implement date format changes
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const StarFormWidget(
+                  name: "Gender",
                 ),
                 const SizedBox(
                   height: 10,
@@ -231,54 +192,27 @@ class _AddScreenState extends State<AddScreen> {
                   ],
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                Row(
-                  children: const [
-                    Text("Current CTC"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
-                TextFormField(
+                TextFormWidget(
+                  name: "CurrentCTC",
                   controller: currentCTCController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Current CTC",
-                  ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                Row(
-                  children: const [
-                    Text("Expected CTC"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
-                TextFormField(
+                TextFormWidget(
                   controller: expectedCTCController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Expected CTC",
-                  ),
+                  name: "Expected CTC",
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                Row(
-                  children: const [
-                    Text("Resume"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
+                const StarFormWidget(
+                  name: "Resume",
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -320,7 +254,7 @@ class _AddScreenState extends State<AddScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Row(
                   children: const [
@@ -330,6 +264,9 @@ class _AddScreenState extends State<AddScreen> {
                       style: TextStyle(color: Colors.red),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -370,7 +307,7 @@ class _AddScreenState extends State<AddScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Row(
                   children: const [
@@ -380,6 +317,9 @@ class _AddScreenState extends State<AddScreen> {
                       style: TextStyle(color: Colors.red),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -394,30 +334,34 @@ class _AddScreenState extends State<AddScreen> {
                           // isEmpty: skill == '',
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                                hint: const Text("Skills"),
-                                value: skill,
-                                isDense: true,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    skill = newValue;
-                                    // state.didChange(newValue);
-                                  });
-                                },
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: '1',
-                                    child: Text('Backend Developer'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '2',
-                                    child: Text('Frontend Developer'),
-                                  ),
-                                ]),
+                              hint: const Text("Skills"),
+                              value: skill,
+                              isDense: true,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  skill = newValue;
+                                  // state.didChange(newValue);
+                                });
+                              },
+                              items: const [
+                                DropdownMenuItem(
+                                  value: '1',
+                                  child: Text('Frontend Developer'),
+                                ),
+                                DropdownMenuItem(
+                                  value: '2',
+                                  child: Text('Backend Developer'),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

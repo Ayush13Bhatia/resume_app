@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:resume_app1/db/sql_helper.dart';
+import '../db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
 import '../model/resume_model.dart';
@@ -18,8 +17,6 @@ class _ViewScreenState extends State<ViewScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
@@ -112,58 +109,60 @@ class _ViewScreenState extends State<ViewScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            elevation: 7,
-                            child: ListTile(
-                              leading: Container(
-                                width: 50.0,
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: MemoryImage(
-                                        base64Decode(
-                                          "${snapshot.data![index].resumePdf}",
-                                        ),
-                                      )
-                                      // Image.asset(imgConvert(widget.image))
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshot.data![index];
+                        // data.id
+
+                        return Card(
+                          elevation: 7,
+                          child: ListTile(
+                            leading: Container(
+                              width: 50.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: MemoryImage(
+                                      base64Decode(
+                                        "${data.image}",
                                       ),
-                                ),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${snapshot.data![index].name}',
-                                    style: const TextStyle(
-                                      color: Colors.black,
+                                    )
+                                    // Image.asset(imgConvert(widget.image))
                                     ),
-                                  ),
-                                  // Row(
-                                  //   children: [Text(widget.gender!), Text(" | ${widget.age}")],
-                                  // )
-                                ],
                               ),
-                              subtitle: const Text(
-                                "View Resume",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      // ResumeDatabase.instance.delete(widget.id!);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete)),
                             ),
-                          );
-                        }),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${data.name}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            subtitle: Text(
+                              "${data.createdTime}",
+                              // "View Resume",
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            trailing: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
+                                  });
+                                },
+                                icon: const Icon(Icons.delete)),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

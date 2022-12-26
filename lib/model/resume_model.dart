@@ -8,12 +8,12 @@ class Resume {
   final String? image;
   final String? resumePdf;
   final String? skils;
-  // final DateTime? createdTime;
+  final DateTime? createdTime;
   Resume(
       {this.id,
       this.name,
       this.age,
-      // this.createdTime,
+      this.createdTime,
       this.gender,
       this.skils,
       this.image,
@@ -26,7 +26,7 @@ class Resume {
         name: json["name"],
         age: json["age"],
         gender: json["gender"],
-        // createdTime: DateTime.parse(json["createTime"]),
+        createdTime: DateTime.parse(json["createTime"]),
         currentCTC: json["currentCTC"],
         expectedCTC: json["expectedCTC"],
         resumePdf: json["resumePdf"],
@@ -44,6 +44,6 @@ class Resume {
         "image": image,
         "resumePdf": resumePdf,
         "skills": skils,
-        // "createTime": createdTime.toString(),
+        "createTime": createdTime.toString(),
       };
 }

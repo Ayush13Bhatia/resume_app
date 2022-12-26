@@ -49,21 +49,7 @@ class _AddScreenState extends State<AddScreen> {
       PlatformFile? files = result.files.first;
       final bytes = await File(files.path ?? "").readAsBytes();
       String img64 = base64Encode(bytes);
-      // print(img64.substring(0, 100));
-      final img65 = base64Decode(img64);
-      // print(img65.sublist(1, 100));
-
-      setState(() {
-        resumePdf = img64;
-      });
-      print(resumePdf);
-      print('Object11');
-      // print(resumePdf);
-      // print('Object12');
-      // print('Object13');
-      // print(profilePic);
-      // print('Object14');
-      return img65;
+      return img64;
     }
     // final image = result.toString();
     // final bytes = await result?.readAsBytes();
@@ -295,11 +281,14 @@ class _AddScreenState extends State<AddScreen> {
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {
-                    convertBaseImage();
+                  onTap: () async {
+                    String imgBase64 = await convertBaseImage();
                     // pickPDF(resumePdf);
                     print("resume");
                     print(resumePdf);
+                    setState(() {
+                      resumePdf = imgBase64;
+                    });
                   },
                   child: DottedBorder(
                     borderType: BorderType.RRect,
@@ -343,8 +332,11 @@ class _AddScreenState extends State<AddScreen> {
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {
-                    // convertBaseImage(img1: profilePic);
+                  onTap: () async {
+                    String abg = await convertBaseImage();
+                    setState(() {
+                      profilePic = abg;
+                    });
                     // print(profilePic);
                     // pickImage(img);
                   },

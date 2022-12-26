@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:resume_app1/db/sql_helper.dart';
@@ -14,19 +15,16 @@ class ViewScreen extends StatefulWidget {
 }
 
 class _ViewScreenState extends State<ViewScreen> {
-  late List<Resume>? resume = [];
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
-    readResume();
 
     super.initState();
   }
 
-  Future<void> readResume() async {
-    resume = await SQLHelper.personQuery();
-    print(resume.toString());
+  Future<List<Resume>> getResume() async {
+    return await SQLHelper.personQuery();
   }
 
   @override
@@ -41,126 +39,137 @@ class _ViewScreenState extends State<ViewScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Card(
-                      elevation: 0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9.0),
-                      ),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(9)),
-                            borderSide: BorderSide(
-                              color: Colors.grey,
-                              // width: 5.0,
+      body: FutureBuilder<List<Resume>>(
+        future: getResume(),
+        builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Card(
+                            elevation: 0,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9.0),
                             ),
-                          ),
-                          suffixIcon: Icon(Icons.search),
-                          hintText: 'Search',
-                          filled: true,
-                          errorStyle: TextStyle(fontSize: 10),
-                        ),
-                        onChanged: (value) {
-                          value = value;
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a search term';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
-              children: [
-                const Text(
-                  'Total: ',
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                Text(
-                  "${resume?.length}",
-                  style: const TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: resume!.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 7,
-                      child: ListTile(
-                        leading: Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: MemoryImage(
-                                  base64Decode(
-                                    "${resume![index].resumePdf}",
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(9)),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    // width: 5.0,
                                   ),
-                                )
-                                // Image.asset(imgConvert(widget.image))
                                 ),
-                          ),
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${resume![index].name}',
-                              style: const TextStyle(
-                                color: Colors.black,
+                                suffixIcon: Icon(Icons.search),
+                                hintText: 'Search',
+                                filled: true,
+                                errorStyle: TextStyle(fontSize: 10),
                               ),
+                              onChanged: (value) {
+                                value = value;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter a search term';
+                                }
+                                return null;
+                              },
                             ),
-                            // Row(
-                            //   children: [Text(widget.gender!), Text(" | ${widget.age}")],
-                            // )
-                          ],
-                        ),
-                        subtitle: const Text(
-                          "View Resume",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
                           ),
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 7,
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Total: ',
+                        style: TextStyle(
+                          fontSize: 17,
                         ),
-                        trailing: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                // ResumeDatabase.instance.delete(widget.id!);
-                              });
-                            },
-                            icon: const Icon(Icons.delete)),
                       ),
-                    );
-                  }),
-            ),
-          ],
-        ),
+                      Text(
+                        "${snapshot.data!.length}",
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 7,
+                            child: ListTile(
+                              leading: Container(
+                                width: 50.0,
+                                height: 50.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: MemoryImage(
+                                        base64Decode(
+                                          "${snapshot.data![index].resumePdf}",
+                                        ),
+                                      )
+                                      // Image.asset(imgConvert(widget.image))
+                                      ),
+                                ),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${snapshot.data![index].name}',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  // Row(
+                                  //   children: [Text(widget.gender!), Text(" | ${widget.age}")],
+                                  // )
+                                ],
+                              ),
+                              subtitle: const Text(
+                                "View Resume",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                              trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      // ResumeDatabase.instance.delete(widget.id!);
+                                    });
+                                  },
+                                  icon: const Icon(Icons.delete)),
+                            ),
+                          );
+                        }),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }

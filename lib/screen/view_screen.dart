@@ -113,8 +113,6 @@ class _ViewScreenState extends State<ViewScreen> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         var data = snapshot.data![index];
-                        // data.id
-
                         return Card(
                           elevation: 7,
                           child: ListTile(
@@ -145,10 +143,10 @@ class _ViewScreenState extends State<ViewScreen> {
                                 ),
                               ],
                             ),
-                            subtitle: Text(
-                              DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
-                              // "View Resume",
-                              style: const TextStyle(
+                            subtitle: const Text(
+                              // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
+                              "View Resume",
+                              style: TextStyle(
                                 color: Colors.blue,
                                 decoration: TextDecoration.underline,
                               ),

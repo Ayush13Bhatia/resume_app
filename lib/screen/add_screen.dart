@@ -9,6 +9,7 @@ import '../components/app_bar_widget.dart';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
+import '../components/border_dotted.dart';
 import '../components/resume_text_form_widget.dart';
 import '../components/star_form_widget.dart';
 import '../db/sql_helper.dart';
@@ -209,116 +210,39 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const StarFormWidget(
-                  name: "Resume",
-                ),
+                const StarFormWidget(name: "Resume"),
                 const SizedBox(
                   height: 5,
                 ),
-                GestureDetector(
+                BorderDotted(
+                  borderName: "Upload PDF",
                   onTap: () async {
-                    String imgBase64 = await convertBaseImage();
-                    // pickPDF(resumePdf);
-                    print("resume");
-                    print(resumePdf);
+                    String profileImg = await convertBaseImage();
                     setState(() {
-                      resumePdf = imgBase64;
+                      resumePdf = profileImg;
                     });
                   },
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    dashPattern: const [8, 4],
-                    strokeWidth: 1,
-                    radius: const Radius.circular(15),
-                    // padding: const EdgeInsets.all(6),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      child: Container(
-                        color: Colors.blue[100],
-                        height: 100,
-                        width: double.infinity,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.upload,
-                                size: 60,
-                                color: Colors.blue,
-                              ),
-                              Text("Upload Photo/pdf")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  children: const [
-                    Text("Profile-Pic"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
+                const StarFormWidget(name: "Profile-Pic"),
                 const SizedBox(
                   height: 5,
                 ),
-                GestureDetector(
+                BorderDotted(
+                  borderName: "Upload Photo",
                   onTap: () async {
-                    String abg = await convertBaseImage();
+                    String profileImg = await convertBaseImage();
                     setState(() {
-                      profilePic = abg;
+                      profilePic = profileImg;
                     });
-                    // print(profilePic);
-                    // pickImage(img);
                   },
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    dashPattern: const [8, 4],
-                    strokeWidth: 1,
-                    radius: const Radius.circular(15),
-                    // padding: const EdgeInsets.all(6),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      child: Container(
-                        height: 100,
-                        width: double.infinity,
-                        color: Colors.blue[100],
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.upload,
-                                size: 60,
-                                color: Colors.blue,
-                              ),
-                              Text("Upload Photo")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  children: const [
-                    Text("Skills"),
-                    Text(
-                      "*",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
+                const StarFormWidget(name: "Skills"),
                 const SizedBox(
                   height: 5,
                 ),

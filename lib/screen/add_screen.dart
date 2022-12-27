@@ -128,10 +128,11 @@ class _AddScreenState extends State<AddScreen> {
                     suffixIcon: GestureDetector(
                       onTap: () async {
                         // ShowDateWidget.showDate(context) as DateTime?;
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
-
-                        String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
+                        // DateTime? pickedDate = await showDatePicker(
+                        //     context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
+                        DateTime? d = await showDatePicker(
+                            context: context, initialDate: DateTime.now(), firstDate: DateTime(1950), lastDate: DateTime.now());
+                        String formattedDate = DateFormat("dd-MM-yyy").format(d!);
 
                         dobController.text = formattedDate;
                       },

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ShowDateWidget {
-  static Future<DateTime?> showDate(BuildContext context) async {
-    // DateTime? pickedDate =
-    return showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
-
-    // String formattedDate = DateFormat("dd-MM-yyy").format(pickedDate!);
-    //
-    // return formattedDate;
+  static Future<DateTime?> showDate(BuildContext context, {DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: initialDate ?? DateTime.now(),
+        firstDate: firstDate ?? DateTime.now(),
+        lastDate: lastDate ?? DateTime.now());
+    if (pickedDate != null) {
+      pickedDate;
+    }
+    return null;
   }
 }

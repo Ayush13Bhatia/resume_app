@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
@@ -145,7 +146,7 @@ class _ViewScreenState extends State<ViewScreen> {
                               ],
                             ),
                             subtitle: Text(
-                              "${data.createdTime}",
+                              DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
                               // "View Resume",
                               style: const TextStyle(
                                 color: Colors.blue,

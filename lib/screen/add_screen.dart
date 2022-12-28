@@ -10,7 +10,9 @@ import '../components/app_bar_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 import '../components/border_dotted.dart';
+import '../components/drop_down_widget.dart';
 import '../components/resume_text_form_widget.dart';
+import '../components/show_date_widget.dart';
 import '../components/star_form_widget.dart';
 import '../db/sql_helper.dart';
 
@@ -43,6 +45,8 @@ class _AddScreenState extends State<AddScreen> {
   String? profilePic;
   String? image1;
 
+  List<String> dropList = ['Male', 'Female'];
+
   convertBaseImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -66,23 +70,21 @@ class _AddScreenState extends State<AddScreen> {
             GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
+                  int myCurrentYear = DateFormat("dd-MM-yyyy").parse(dobController.text).year;
                   return _addItems(
                     Resume(
-                        name: nameController.text,
-                        currentCTC: currentCTCController.text,
-                        expectedCTC: expectedCTCController.text,
-                        gender: gender,
-                        skils: skill,
-                        resumePdf: resumePdf,
-                        image: profilePic,
-                        createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text)
-
-                        // createdTime: widget.resume!.createdTime,
-                        // DateFormat("dd-MM-yyy").format(Resume()) as DateTime,
-                        ),
+                      name: nameController.text,
+                      currentCTC: currentCTCController.text,
+                      expectedCTC: expectedCTCController.text,
+                      gender: gender,
+                      skils: skill,
+                      resumePdf: resumePdf,
+                      image: profilePic,
+                      createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text),
+                      age: int.parse((DateTime.now().year - myCurrentYear).toString()),
+                    ),
                   );
                 }
-                print("Pressed");
               },
               child: const Icon(
                 Icons.add,
@@ -106,16 +108,14 @@ class _AddScreenState extends State<AddScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Please provde the following information"),
-                const SizedBox(
-                  height: 10,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 TextFormWidget(
                   controller: nameController,
                   name: "Name",
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 const StarFormWidget(
                   name: "DOB",
                 ),
@@ -128,13 +128,8 @@ class _AddScreenState extends State<AddScreen> {
                   decoration: InputDecoration(
                     suffixIcon: GestureDetector(
                       onTap: () async {
-                        // ShowDateWidget.showDate(context) as DateTime?;
-                        // DateTime? pickedDate = await showDatePicker(
-                        //     context: context, initialDate: DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime(2025));
-                        DateTime? d = await showDatePicker(
-                            context: context, initialDate: DateTime.now(), firstDate: DateTime(1950), lastDate: DateTime.now());
+                        DateTime? d = await ShowResumeDateWidget.showDate(context);
                         String formattedDate = DateFormat("dd-MM-yyy").format(d!);
-
                         dobController.text = formattedDate;
                       },
                       child: const Icon(
@@ -145,14 +140,9 @@ class _AddScreenState extends State<AddScreen> {
                     hintText: "DOB",
                     // labelText:  ,
                   ),
-                  onChanged: (val) {
-                    setState(() {
-                      // TODO: implement date format changes
-                    });
-                  },
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 const StarFormWidget(
                   name: "Gender",
@@ -172,44 +162,44 @@ class _AddScreenState extends State<AddScreen> {
                           // isEmpty: gender == '',
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                                hint: const Text("Select gender"),
-                                value: gender,
-                                isDense: true,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    gender = newValue!;
-                                    // state.didChange(newValue);
+                              hint: const Text("Select gender"),
+                              value: gender,
+                              isDense: true,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  // if (gender != null) {
+                                  gender = newValue!;
+                                  // }
+                                  // state.didChange(newValue);
 
-                                    // state.didChange(newValue);
-                                  });
-                                },
-                                items: const [
-                                  DropdownMenuItem(value: '1', child: Text('Male')),
-                                  DropdownMenuItem(value: '2', child: Text('Female')),
-                                ]),
+                                  // state.didChange(newValue);
+                                });
+                              },
+                              items: const [
+                                DropdownMenuItem(value: '1', child: Text('Male')),
+                                DropdownMenuItem(value: '2', child: Text('Female')),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 TextFormWidget(
                   name: "CurrentCTC",
                   controller: currentCTCController,
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 TextFormWidget(
                   controller: expectedCTCController,
                   name: "Expected CTC",
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
+
                 const StarFormWidget(name: "Resume"),
                 const SizedBox(
                   height: 5,

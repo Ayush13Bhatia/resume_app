@@ -10,6 +10,9 @@ class TextFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 20,
+        ),
         StarFormWidget(
           name: name,
         ),
@@ -29,6 +32,9 @@ class TextFormWidget extends StatelessWidget {
             hintText: '$name',
           ),
           onChanged: (val) {},
+        ),
+        const SizedBox(
+          height: 20,
         ),
       ],
     );

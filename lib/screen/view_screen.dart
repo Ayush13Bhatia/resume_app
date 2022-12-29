@@ -1,16 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import '../db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
 import '../model/resume_model.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:open_filex/open_filex.dart';
 
 class ViewScreen extends StatefulWidget {
   const ViewScreen({Key? key}) : super(key: key);
@@ -30,14 +24,14 @@ class _ViewScreenState extends State<ViewScreen> {
     return await SQLHelper.personQuery();
   }
 
-  Future<String> createPdfPath(String pdfFile) async {
-    var decodePdf = base64Decode(pdfFile);
-    String path = (await getApplicationDocumentsDirectory()).path;
-    File filePath = File("$path/" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
-    await filePath.writeAsBytes(decodePdf);
-    await OpenFilex.open(filePath.path);
-    return filePath.path;
-  }
+  // Future<String> createPdfPath(String pdfFile) async {
+  //   var decodePdf = base64Decode(pdfFile);
+  //   String path = (await getApplicationDocumentsDirectory()).path;
+  //   File filePath = File("$path/" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
+  //   await filePath.writeAsBytes(decodePdf);
+  //   await OpenFilex.open(filePath.path);
+  //   return filePath.path;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,13 +152,7 @@ class _ViewScreenState extends State<ViewScreen> {
                               ],
                             ),
                             subtitle: GestureDetector(
-                              onTap: () async {
-                                print("objectPDF");
-                                var pdfFile = base64Decode('${data.resumePdf}');
-                                createPdfPath('${data.resumePdf}');
-                                // final result = await OpenFilex.open(pF);
-                                // print(result);
-                              },
+                              onTap: () async {},
                               child: const Text(
                                 // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
                                 "View Resume",

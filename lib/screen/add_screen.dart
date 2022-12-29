@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -7,10 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../components/app_bar_widget.dart';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 import '../components/border_dotted.dart';
-import '../components/drop_down_widget.dart';
 import '../components/resume_text_form_widget.dart';
 import '../components/show_date_widget.dart';
 import '../components/star_form_widget.dart';

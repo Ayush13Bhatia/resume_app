@@ -10,31 +10,28 @@ class TextFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
-          height: 20,
-        ),
         StarFormWidget(
           name: name,
         ),
         const SizedBox(
           height: 5,
         ),
-        TextFormField(
-          // validator: (value) {
-          //   if (value == null || value.isEmpty) {
-          //     return "Please enter the text";
-          //   }
-          //   return null;
-          // },
-          controller: controller,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: '$name',
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+          child: TextFormField(
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return "Please enter the text";
+            //   }
+            //   return null;
+            // },
+            controller: controller,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              hintText: '$name',
+            ),
+            onChanged: (val) {},
           ),
-          onChanged: (val) {},
-        ),
-        const SizedBox(
-          height: 20,
         ),
       ],
     );

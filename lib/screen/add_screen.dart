@@ -49,7 +49,6 @@ class _AddScreenState extends State<AddScreen> {
       type: FileType.custom,
       allowedExtensions: extensions,
     );
-
     if (result != null) {
       PlatformFile? files = result.files.first;
       final bytes = await File(files.path ?? "").readAsBytes();
@@ -193,9 +192,7 @@ class _AddScreenState extends State<AddScreen> {
                 BorderDotted(
                   borderName: "Upload PDF",
                   onTap: () async {
-                    String profileImg = await convertBaseImage([
-                      'pdf',
-                    ]);
+                    String profileImg = await convertBaseImage(['pdf']);
                     setState(() {
                       resumePdf = profileImg;
                     });

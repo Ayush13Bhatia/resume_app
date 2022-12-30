@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 import '../db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
@@ -24,14 +27,14 @@ class _ViewScreenState extends State<ViewScreen> {
     return await SQLHelper.personQuery();
   }
 
-  // Future<String> createPdfPath(String pdfFile) async {
-  //   var decodePdf = base64Decode(pdfFile);
-  //   String path = (await getApplicationDocumentsDirectory()).path;
-  //   File filePath = File("$path/" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
-  //   await filePath.writeAsBytes(decodePdf);
-  //   await OpenFilex.open(filePath.path);
-  //   return filePath.path;
-  // }
+  Future<String> createPdfPath(String pdfFile) async {
+    var decodedPdf = base64Decode(pdfFile);
+    final output = (await getApplicationDocumentsDirectory()).path;
+    final file = File("${output}" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
+    await file.writeAsBytes(decodedPdf.buffer.asUint8List());
+    await OpenFilex.open(file.path);
+    return file.path;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,20 +127,23 @@ class _ViewScreenState extends State<ViewScreen> {
                         return Card(
                           elevation: 7,
                           child: ListTile(
-                            leading: Container(
-                              width: 50.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: MemoryImage(
-                                      base64Decode(
-                                        "${data.image}",
+                            leading: GestureDetector(
+                              onTap: () {
+                                print("Object11");
+                              },
+                              child: Container(
+                                width: 50.0,
+                                height: 50.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: MemoryImage(
+                                        base64Decode("${data.image}"),
+                                      )
+                                      // Image.asset(imgConvert(widget.image))
                                       ),
-                                    )
-                                    // Image.asset(imgConvert(widget.image))
-                                    ),
+                                ),
                               ),
                             ),
                             title: Column(
@@ -152,7 +158,9 @@ class _ViewScreenState extends State<ViewScreen> {
                               ],
                             ),
                             subtitle: GestureDetector(
-                              onTap: () async {},
+                              onTap: () async {
+                                createPdfPath("${data.resumePdf}");
+                              },
                               child: const Text(
                                 // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
                                 "View Resume",

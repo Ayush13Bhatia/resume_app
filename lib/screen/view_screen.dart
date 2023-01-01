@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import '../components/enlarge_image.dart';
 import '../db/sql_helper.dart';
 
 import '../components/app_bar_widget.dart';
@@ -130,6 +131,14 @@ class _ViewScreenState extends State<ViewScreen> {
                             leading: GestureDetector(
                               onTap: () {
                                 print("Object11");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EnlargeImage(
+                                      profileImg: data.image,
+                                    ),
+                                  ),
+                                );
                               },
                               child: Container(
                                 width: 50.0,

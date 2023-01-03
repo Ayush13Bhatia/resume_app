@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/my_themes.dart';
+
 class BorderDotted extends StatelessWidget {
   final Function()? onTap;
   final String? borderName;
@@ -11,8 +13,9 @@ class BorderDotted extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap!(),
       child: DottedBorder(
+        color: MyThemes.primary,
         borderType: BorderType.RRect,
-        dashPattern: const [8, 4],
+        dashPattern: const [16, 9],
         strokeWidth: 1,
         radius: const Radius.circular(15),
         // padding: const EdgeInsets.all(6),
@@ -21,7 +24,7 @@ class BorderDotted extends StatelessWidget {
           child: Container(
             height: 100,
             width: double.infinity,
-            color: Colors.blue[100],
+            color: MyThemes.primaryLight,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -29,7 +32,7 @@ class BorderDotted extends StatelessWidget {
                   const Icon(
                     Icons.upload,
                     size: 60,
-                    color: Colors.blue,
+                    color: MyThemes.primary,
                   ),
                   Text(borderName ?? ""),
                 ],

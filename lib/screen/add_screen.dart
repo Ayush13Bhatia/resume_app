@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:resume_app1/utils/my_themes.dart';
 
 import '../components/app_bar_widget.dart';
 
@@ -126,7 +127,8 @@ class _AddScreenState extends State<AddScreen> {
                         dobController.text = formattedDate;
                       },
                       child: const Icon(
-                        Icons.calendar_month,
+                        Icons.calendar_today,
+                        color: MyThemes.primary,
                       ),
                     ),
                     border: const OutlineInputBorder(),
@@ -268,13 +270,14 @@ class _AddScreenState extends State<AddScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: MyThemes.primary),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           return _addItems(Resume());
                         }
                       },
                       child: const Text(
-                        'add',
+                        'ADD',
                         style: TextStyle(
                           color: Colors.white,
                         ),

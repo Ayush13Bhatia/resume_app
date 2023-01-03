@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:resume_app1/utils/my_themes.dart';
 import '../components/enlarge_image.dart';
 import '../db/sql_helper.dart';
 
@@ -67,7 +68,7 @@ class _ViewScreenState extends State<ViewScreen> {
                         children: [
                           Card(
                             elevation: 0,
-                            color: Colors.white,
+                            color: MyThemes.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(9.0),
                             ),
@@ -76,11 +77,14 @@ class _ViewScreenState extends State<ViewScreen> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(9)),
                                   borderSide: BorderSide(
-                                    color: Colors.grey,
+                                    color: MyThemes.grey,
                                     // width: 5.0,
                                   ),
                                 ),
-                                suffixIcon: Icon(Icons.search),
+                                suffixIcon: Icon(
+                                  Icons.search,
+                                  color: MyThemes.black,
+                                ),
                                 hintText: 'Search',
                                 filled: true,
                                 errorStyle: TextStyle(fontSize: 10),
@@ -166,18 +170,32 @@ class _ViewScreenState extends State<ViewScreen> {
                                 ),
                               ],
                             ),
-                            subtitle: GestureDetector(
-                              onTap: () async {
-                                createPdfPath("${data.resumePdf}");
-                              },
-                              child: const Text(
-                                // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
-                                "View Resume",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: const [
+                                    Text("M"),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text("21"),
+                                  ],
                                 ),
-                              ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    createPdfPath("${data.resumePdf}");
+                                  },
+                                  child: const Text(
+                                    // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
+                                    "View Resume",
+                                    style: TextStyle(
+                                      color: MyThemes.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             trailing: IconButton(
                                 onPressed: () {

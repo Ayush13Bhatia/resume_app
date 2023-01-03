@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resume_app1/utils/my_themes.dart';
 import '../db/sql_helper.dart';
 import '../screen/view_screen.dart';
 
@@ -41,16 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => Get.to(const AddScreen()),
               icon: const Icon(
                 Icons.add,
-                color: Colors.blue,
+                color: MyThemes.primary,
               ),
               label: const Text(
                 'add',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: MyThemes.primary,
                 ),
               ),
             ),
             ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MyThemes.primary,
+              ),
               onPressed: () => Get.to(const ViewScreen()),
               icon: const Icon(
                 Icons.remove_red_eye,

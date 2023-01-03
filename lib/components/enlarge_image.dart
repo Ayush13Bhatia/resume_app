@@ -24,15 +24,15 @@ class EnlargeImage extends StatelessWidget {
               imageProvider: MemoryImage(
                 base64Decode(profileImg!),
               ),
-              // loadingBuilder: (context, event) => Center(
-              //   child: Container(
-              //     width: 20.0,
-              //     height: 20.0,
-              //     child: CircularProgressIndicator(
-              //       value: event == null ? 0 : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
-              //     ),
-              //   ),
-              // ),
+              loadingBuilder: (context, event) => Center(
+                child: Container(
+                  width: 20.0,
+                  height: 20.0,
+                  child: CircularProgressIndicator(
+                    value: event == null ? 0 : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
+                  ),
+                ),
+              ),
             ),
           ),
           Positioned(
@@ -52,3 +52,4 @@ class EnlargeImage extends StatelessWidget {
     );
   }
 }
+// uuid path resume.pdf

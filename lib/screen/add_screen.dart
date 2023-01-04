@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:resume_app1/components/elevation_button_widget.dart';
 import 'package:resume_app1/utils/my_themes.dart';
 
 import '../components/app_bar_widget.dart';
@@ -269,20 +270,42 @@ class _AddScreenState extends State<AddScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: MyThemes.primary),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(backgroundColor: MyThemes.primary),
+                    //   onPressed: () {
+                    //     if (_formKey.currentState!.validate()) {
+                    //       return _addItems(Resume());
+                    //     }
+                    //   },
+                    //   child: const Text(
+                    //     'ADD',
+                    //     style: TextStyle(
+                    //       color: Colors.white,
+                    //     ),
+                    //   ),
+                    // ),
+                    ElevationButtonWidget(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          return _addItems(Resume());
+                          int myCurrentYear = DateFormat("dd-MM-yyyy").parse(dobController.text).year;
+                          return _addItems(
+                            Resume(
+                              name: nameController.text,
+                              currentCTC: currentCTCController.text,
+                              expectedCTC: expectedCTCController.text,
+                              gender: gender,
+                              skils: skill,
+                              resumePdf: resumePdf,
+                              image: profilePic,
+                              createdTime: DateFormat('dd-MM-yyyy').parse(dobController.text),
+                              age: int.parse((DateTime.now().year - myCurrentYear).toString()),
+                            ),
+                          );
                         }
                       },
-                      child: const Text(
-                        'ADD',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      padding: const EdgeInsets.all(1.5),
+                      showIcon: false,
+                    )
                   ],
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resume_app1/components/elevation_button_widget.dart';
 import 'package:resume_app1/utils/my_themes.dart';
 import '../db/sql_helper.dart';
 import '../screen/view_screen.dart';
@@ -38,32 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            OutlinedButton.icon(
+            ElevationButtonWidget(
               onPressed: () => Get.to(const AddScreen()),
-              icon: const Icon(
-                Icons.add,
-                color: MyThemes.primary,
-              ),
-              label: const Text(
-                'add',
-                style: TextStyle(
-                  color: MyThemes.primary,
-                ),
-              ),
+              icon: Icons.add,
+              backgroundColor: MyThemes.white,
+              textStyleColor: MyThemes.primary,
             ),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: MyThemes.primary,
-              ),
+            ElevationButtonWidget(
               onPressed: () => Get.to(const ViewScreen()),
-              icon: const Icon(
-                Icons.remove_red_eye,
-                color: Colors.white,
-              ),
-              label: const Text(
-                "View",
-                style: TextStyle(color: Colors.white),
-              ),
+              text: "VIEW",
             ),
           ],
         ),

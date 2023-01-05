@@ -4,7 +4,8 @@ import 'package:resume_app1/components/star_form_widget.dart';
 class TextFormWidget extends StatelessWidget {
   final TextEditingController? controller;
   final String? name;
-  const TextFormWidget({Key? key, this.controller, this.name}) : super(key: key);
+  final Function(String)? onChange;
+  const TextFormWidget({Key? key, this.onChange, this.controller, this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,8 @@ class TextFormWidget extends StatelessWidget {
         StarFormWidget(
           name: name,
         ),
-        const SizedBox(
-          height: 5,
-        ),
         Padding(
-          padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
           child: TextFormField(
             // validator: (value) {
             //   if (value == null || value.isEmpty) {
@@ -30,7 +28,7 @@ class TextFormWidget extends StatelessWidget {
               border: const OutlineInputBorder(),
               hintText: '$name',
             ),
-            onChanged: (val) {},
+            onChanged: onChange,
           ),
         ),
       ],

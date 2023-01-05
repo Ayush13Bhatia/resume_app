@@ -10,6 +10,7 @@ import '../components/app_bar_widget.dart';
 
 import 'package:intl/intl.dart';
 import '../components/border_dotted.dart';
+import '../components/drop_down_widget.dart';
 import '../components/resume_text_form_widget.dart';
 import '../components/show_date_widget.dart';
 import '../components/star_form_widget.dart';
@@ -107,6 +108,9 @@ class _AddScreenState extends State<AddScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Please provde the following information"),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextFormWidget(
                   controller: nameController,
                   name: "Name",
@@ -270,20 +274,6 @@ class _AddScreenState extends State<AddScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(backgroundColor: MyThemes.primary),
-                    //   onPressed: () {
-                    //     if (_formKey.currentState!.validate()) {
-                    //       return _addItems(Resume());
-                    //     }
-                    //   },
-                    //   child: const Text(
-                    //     'ADD',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
                     ElevationButtonWidget(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {

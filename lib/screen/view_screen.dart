@@ -34,6 +34,7 @@ class _ViewScreenState extends State<ViewScreen> {
     final output = (await getApplicationDocumentsDirectory()).path;
     final file = File("${output}" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
     await file.writeAsBytes(decodedPdf.buffer.asUint8List());
+
     await OpenFilex.open(file.path);
     return file.path;
   }
@@ -184,6 +185,9 @@ class _ViewScreenState extends State<ViewScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
+                                    if (data.resumePdf!.isEmpty && data.resumePdf == null) {
+                                      return;
+                                    }
                                     createPdfPath("${data.resumePdf}");
                                   },
                                   child: const Text(

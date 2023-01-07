@@ -175,12 +175,12 @@ class _ViewScreenState extends State<ViewScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  children: const [
-                                    Text("M"),
-                                    SizedBox(
+                                  children: [
+                                    Text('${data.gender}'),
+                                    const SizedBox(
                                       width: 10,
                                     ),
-                                    Text("21"),
+                                    Text("${data.age}"),
                                   ],
                                 ),
                                 GestureDetector(

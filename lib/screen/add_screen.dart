@@ -171,8 +171,8 @@ class _AddScreenState extends State<AddScreen> {
                                 });
                               },
                               items: const [
-                                DropdownMenuItem(value: '1', child: Text('Male')),
-                                DropdownMenuItem(value: '2', child: Text('Female')),
+                                DropdownMenuItem(value: 'Male', child: Text('Male')),
+                                DropdownMenuItem(value: 'Female', child: Text('Female')),
                               ],
                             ),
                           ),
@@ -252,11 +252,11 @@ class _AddScreenState extends State<AddScreen> {
                               },
                               items: const [
                                 DropdownMenuItem(
-                                  value: '1',
+                                  value: 'Frontend Developer',
                                   child: Text('Frontend Developer'),
                                 ),
                                 DropdownMenuItem(
-                                  value: '2',
+                                  value: 'Backend Developer',
                                   child: Text('Backend Developer'),
                                 ),
                               ],

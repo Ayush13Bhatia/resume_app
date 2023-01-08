@@ -67,38 +67,42 @@ class _ViewScreenState extends State<ViewScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          Card(
-                            elevation: 0,
-                            color: MyThemes.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(9.0),
-                            ),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(9)),
-                                  borderSide: BorderSide(
-                                    color: MyThemes.grey,
-                                    // width: 5.0,
-                                  ),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.search,
-                                  color: MyThemes.black,
-                                ),
-                                hintText: 'Search',
-                                filled: true,
-                                errorStyle: TextStyle(fontSize: 10),
+                          Container(
+                            height: 70,
+                            width: double.maxFinite,
+                            child: Card(
+                              elevation: 0,
+                              color: MyThemes.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9.0),
                               ),
-                              onChanged: (value) {
-                                value = value;
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter a search term';
-                                }
-                                return null;
-                              },
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(9)),
+                                    borderSide: BorderSide(
+                                      color: MyThemes.grey,
+                                      // width: 5.0,
+                                    ),
+                                  ),
+                                  suffixIcon: Icon(
+                                    Icons.search,
+                                    color: MyThemes.black,
+                                  ),
+                                  hintText: 'Search',
+                                  filled: true,
+                                  errorStyle: TextStyle(fontSize: 10),
+                                ),
+                                onChanged: (value) {
+                                  value = value;
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter a search term';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
                           ),
                         ],

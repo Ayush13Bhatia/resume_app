@@ -10,23 +10,55 @@ class DropDownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      hint: Text(
-        '$textValue',
-        textAlign: TextAlign.start,
-      ),
-      value: value,
-      isDense: true,
-      onChanged: onChange,
-      alignment: Alignment.center,
-      items: dropList
-          .map(
-            (String e) => DropdownMenuItem<String>(
-              value: e,
-              child: Text(e),
-            ),
-          )
-          .toList(),
+    return Column(
+      children: [
+        FormField(
+          builder: (FormFieldState state) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                  errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
+                  hintText: 'Please select expense',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+              // isEmpty: gender == '',
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  hint: Text('$textValue'),
+                  value: value,
+                  isDense: true,
+                  onChanged: onChange,
+                  items: dropList
+                      .map(
+                        (String e) => DropdownMenuItem<String>(
+                          value: e,
+                          child: Text(e),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
+
+    //   DropdownButton<String>(
+    //   hint: Text(
+    //     '$textValue',
+    //     textAlign: TextAlign.start,
+    //   ),
+    //   value: value,
+    //   isDense: true,
+    //   onChanged: onChange,
+    //   alignment: Alignment.center,
+    //   items: dropList
+    //       .map(
+    //         (String e) => DropdownMenuItem<String>(
+    //           value: e,
+    //           child: Text(e),
+    //         ),
+    //       )
+    //       .toList(),
+    // );
   }
 }

@@ -151,95 +151,16 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                // Column(
-                //   children: [
-                //     FormField(
-                //       builder: (FormFieldState state) {
-                //         return InputDecorator(
-                //           decoration: InputDecoration(
-                //               errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                //               hintText: 'Please select expense',
-                //               border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                //           // isEmpty: gender == '',
-                //           child: DropdownButtonHideUnderline(
-                //             child: DropdownButton<String>(
-                //               hint: const Text("Select gender"),
-                //               value: gender,
-                //               isDense: true,
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   gender = newValue!;
-                //                 });
-                //               },
-                //               items: const [
-                //                 DropdownMenuItem(value: 'Male', child: Text('Male')),
-                //                 DropdownMenuItem(value: 'Female', child: Text('Female')),
-                //               ],
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
-                // Column(
-                //   children: [
-                //     FormField(
-                //       builder: (FormFieldState state) {
-                //         return InputDecorator(
-                //           decoration: InputDecoration(
-                //               errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                //               hintText: 'Please select expense',
-                //               border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                //           // isEmpty: gender == '',
-                //           child: DropdownButtonHideUnderline(
-                //             child: DropdownButton<String>(
-                //               hint: const Text("Select gender"),
-                //               value: gender,
-                //               isDense: true,
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   gender = newValue!;
-                //                 });
-                //               },
-                //               items: const [
-                //                 DropdownMenuItem(value: 'Male', child: Text('Male')),
-                //                 DropdownMenuItem(value: 'Female', child: Text('Female')),
-                //               ],
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
-                Column(
-                  children: [
-                    FormField(
-                      builder: (FormFieldState state) {
-                        return InputDecorator(
-                          decoration: InputDecoration(
-                              errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                              hintText: 'Please select expense',
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                          // isEmpty: gender == '',
-                          child: DropdownButtonHideUnderline(
-                            child: DropDownWidget(
-                              value: gender,
-                              hintText: 'Select gender',
-                              textValue: 'Select gender',
-                              onChange: (newValue) {
-                                setState(() {
-                                  gender = newValue!;
-                                });
-                              },
-                              dropList: dropList,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                DropDownWidget(
+                  value: gender,
+                  // hintText: 'Select gender',
+                  textValue: 'Select gender',
+                  onChange: (newValue) {
+                    setState(() {
+                      gender = newValue!;
+                    });
+                  },
+                  dropList: dropList,
                 ),
                 TextFormWidget(
                   name: "CurrentCTC",
@@ -288,100 +209,16 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                //   children: [
-                //     FormField(
-                //       builder: (FormFieldState state) {
-                //         return InputDecorator(
-                //           decoration: InputDecoration(
-                //               errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                //               hintText: 'Please select expense',
-                //               border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                //           // isEmpty: skill == '',
-                //           child: DropdownButtonHideUnderline(
-                //             child: DropdownButton<String>(
-                //               hint: const Text("Skills"),
-                //               value: skill,
-                //               isDense: true,
-                //               onChanged: (newValue) {
-                //                 setState(() {
-                //                   skill = newValue;
-                //                   // state.didChange(newValue);
-                //                 });
-                //               },
-                //               items: const [
-                //                 DropdownMenuItem(
-                //                   value: 'Frontend Developer',
-                //                   child: Text('Frontend Developer'),
-                //                 ),
-                //                 DropdownMenuItem(
-                //                   value: 'Backend Developer',
-                //                   child: Text('Backend Developer'),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
-                Column(
-                  children: [
-                    FormField(
-                      builder: (FormFieldState state) {
-                        return InputDecorator(
-                          decoration: InputDecoration(
-                              errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                              hintText: 'Please select expense',
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                          // isEmpty: gender == '',
-                          child: DropdownButtonHideUnderline(
-                            child: DropDownWidget(
-                              value: skill,
-                              hintText: 'Skills',
-                              textValue: 'Skills',
-                              onChange: (newValue) {
-                                skill = newValue!;
-                                setState(() {});
-                              },
-                              dropList: dropList1,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                DropDownWidget(
+                  value: skill,
+                  hintText: 'Skills',
+                  textValue: 'Skills',
+                  onChange: (newValue) {
+                    skill = newValue!;
+                    setState(() {});
+                  },
+                  dropList: dropList1,
                 ),
-                // Column(
-                //   children: [
-                //     FormField(
-                //       builder: (FormFieldState state) {
-                //         return InputDecorator(
-                //           decoration: InputDecoration(
-                //               errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 16.0),
-                //               hintText: 'Please select expense',
-                //               border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                //           // isEmpty: gender == '',
-                //           child: DropdownButtonHideUnderline(
-                //             child: DropDownWidget(
-                //               value: skill,
-                //               hintText: 'Skills',
-                //               textValue: 'Skills',
-                //               onChange: (newValue) {
-                //                 setState(() {
-                //                   skill = newValue!;
-                //                 });
-                //               },
-                //               dropList: dropList1,
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
                 const SizedBox(
                   height: 10,
                 ),

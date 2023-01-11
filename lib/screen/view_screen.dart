@@ -25,8 +25,8 @@ class _ViewScreenState extends State<ViewScreen> {
     super.initState();
   }
 
-  Future<List<Resume>> getResume() async {
-    return await SQLHelper.personQuery();
+  Future<List<Resume>> findResume(String a) async {
+    return await SQLHelper.findPerson(a);
   }
 
   Future<String> createPdfPath(String pdfFile) async {
@@ -52,13 +52,18 @@ class _ViewScreenState extends State<ViewScreen> {
         ),
       ),
       body: FutureBuilder<List<Resume>>(
-        future: getResume(),
-        builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
+          future: SQLHelper.personQuery('s'),
+          builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Text("ERROR ${snapshot.error}"),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -220,9 +225,7 @@ class _ViewScreenState extends State<ViewScreen> {
                 ],
               ),
             );
-          }
-        },
-      ),
+          }),
     );
   }
 }

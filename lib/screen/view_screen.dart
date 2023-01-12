@@ -20,14 +20,15 @@ class ViewScreen extends StatefulWidget {
 
 class _ViewScreenState extends State<ViewScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
   }
 
-  Future<List<Resume>> findResume(String a) async {
-    return await SQLHelper.findPerson(a);
-  }
+  // Future<List<Resume>> findResume(String a) async {
+  //   // return await SQLHelper.findPerson(a);
+  // }
 
   Future<String> createPdfPath(String pdfFile) async {
     var decodedPdf = base64Decode(pdfFile);
@@ -51,91 +52,91 @@ class _ViewScreenState extends State<ViewScreen> {
           },
         ),
       ),
-      body: FutureBuilder<List<Resume>>(
-          future: SQLHelper.personQuery('s'),
-          builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("ERROR ${snapshot.error}"),
-              );
-            }
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 70,
-                            width: double.maxFinite,
-                            child: Card(
-                              elevation: 0,
-                              color: MyThemes.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9.0),
-                              ),
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(9)),
-                                    borderSide: BorderSide(
-                                      color: MyThemes.grey,
-                                      // width: 5.0,
-                                    ),
-                                  ),
-                                  suffixIcon: Icon(
-                                    Icons.search,
-                                    color: MyThemes.black,
-                                  ),
-                                  hintText: 'Search',
-                                  filled: true,
-                                  errorStyle: TextStyle(fontSize: 10),
-                                ),
-                                onChanged: (value) {
-                                  value = value;
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter a search term';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 70,
+              width: double.maxFinite,
+              child: Card(
+                elevation: 0,
+                color: MyThemes.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9.0),
+                ),
+                child: TextFormField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(9)),
+                      borderSide: BorderSide(
+                        color: MyThemes.grey,
+                        // width: 5.0,
+                      ),
+                    ),
+                    suffixIcon: Icon(
+                      Icons.search,
+                      color: MyThemes.black,
+                    ),
+                    hintText: 'Search',
+                    filled: true,
+                    errorStyle: TextStyle(fontSize: 10),
+                  ),
+                  onChanged: (value) {
+                    value = value;
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a search term';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+          ),
+          FutureBuilder<List<Resume>>(
+            future: SQLHelper.findPerson(),
+            builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("ERROR ${snapshot.error}"),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 7,
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Total: ',
+                          style: TextStyle(
+                            fontSize: 17,
                           ),
-                        ],
-                      )),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Total: ',
-                        style: TextStyle(
-                          fontSize: 17,
                         ),
-                      ),
-                      Text(
-                        "${snapshot.data!.length}",
-                        style: const TextStyle(
-                          fontSize: 17,
+                        Text(
+                          "${snapshot.data!.length}",
+                          style: const TextStyle(
+                            fontSize: 17,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         var data = snapshot.data![index];
@@ -160,12 +161,11 @@ class _ViewScreenState extends State<ViewScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: MemoryImage(
-                                        base64Decode("${data.image}"),
-                                      )
-                                      // Image.asset(imgConvert(widget.image))
-                                      ),
+                                    fit: BoxFit.fill,
+                                    image: MemoryImage(
+                                      base64Decode("${data.image}"),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -211,21 +211,24 @@ class _ViewScreenState extends State<ViewScreen> {
                               ],
                             ),
                             trailing: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
-                                  });
-                                },
-                                icon: const Icon(Icons.delete)),
+                              onPressed: () {
+                                setState(() {
+                                  SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
+                                });
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
                           ),
                         );
                       },
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

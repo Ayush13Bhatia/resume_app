@@ -26,7 +26,7 @@ class SQLHelper {
     return id;
   }
 
-  static Future<List<Resume>> personQuery(String? query) async {
+  static Future<List<Resume>> personQuery({String? query}) async {
     Database db = await initializeSqlDB();
     var pr = [];
     if (query != null && query.isNotEmpty) {
@@ -37,9 +37,9 @@ class SQLHelper {
     return pr.map((e) => Resume.fromJson(e)).toList();
   }
 
-  static Future<List<Resume>> findPerson(String a) async {
+  static Future<List<Resume>> findPerson() async {
     Database db = await initializeSqlDB();
-    final pr = await db.rawQuery('SELECT * FROM ${Query.resumeTable} WHERE name LIKE $a%');
+    final pr = await db.query(Query.resumeTable);
     return pr.map((e) => Resume.fromJson(e)).toList();
   }
 

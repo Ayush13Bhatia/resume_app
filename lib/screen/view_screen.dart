@@ -44,7 +44,7 @@ class _ViewScreenState extends State<ViewScreen> {
       appBar: PreferredSize(
         preferredSize: AppBar().preferredSize,
         child: AppBarWidget(
-          title: "View Screen",
+          title: "View",
           onBackTap: () {
             Navigator.pop(context);
           },
@@ -96,139 +96,197 @@ class _ViewScreenState extends State<ViewScreen> {
             ),
           ),
           Expanded(
-            child: FutureBuilder<List<Resume>>(
-              future: SQLHelper.personQuery(query: _searchController.text),
-              builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("ERROR ${snapshot.error}"),
-                  );
-                }
+            child: ListView.builder(
+              itemCount: 4,
+              itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Row(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
+                  child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Total: ',
-                            style: TextStyle(
-                              fontSize: 17,
+                          Container(
+                            height: 50,
+                            width: 50,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(''),
                             ),
                           ),
-                          Text(
-                            "${snapshot.data!.length}",
-                            style: const TextStyle(
-                              fontSize: 17,
-                            ),
+                          const SizedBox(
+                            width: 20,
                           ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Ayushi"),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: const [
+                                  Text("M  |"),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('21')
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Text(
+                                "View Resume",
+                                style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            var data = snapshot.data![index];
-                            return Card(
-                              elevation: 7,
-                              child: ListTile(
-                                leading: GestureDetector(
-                                  onTap: () {
-                                    print("Object11");
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => EnlargeImage(
-                                          profileImg: data.image,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 50.0,
-                                    height: 50.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: MemoryImage(
-                                          base64Decode("${data.image}"),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${data.name}',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text('${data.gender}'),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("${data.age}"),
-                                      ],
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        if (data.resumePdf!.isEmpty && data.resumePdf == null) {
-                                          return;
-                                        }
-                                        createPdfPath("${data.resumePdf}");
-                                      },
-                                      child: const Text(
-                                        "View Resume",
-                                        style: TextStyle(
-                                          color: MyThemes.primary,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 );
               },
             ),
           ),
+
+          // Expanded(
+          //   child: FutureBuilder<List<Resume>>(
+          //     future: SQLHelper.personQuery(query: _searchController.text),
+          //     builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.waiting) {
+          //         return const Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       }
+          //       if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text("ERROR ${snapshot.error}"),
+          //         );
+          //       }
+          //       return Padding(
+          //         padding: const EdgeInsets.all(8.0),
+          //         child: Column(
+          //           children: [
+          //             const SizedBox(
+          //               height: 7,
+          //             ),
+          //             Row(
+          //               children: [
+          //                 const Text(
+          //                   'Total: ',
+          //                   style: TextStyle(
+          //                     fontSize: 17,
+          //                   ),
+          //                 ),
+          //                 Text(
+          //                   "${snapshot.data!.length}",
+          //                   style: const TextStyle(
+          //                     fontSize: 17,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             const SizedBox(
+          //               height: 15,
+          //             ),
+          //             Expanded(
+          //               child: ListView.builder(
+          //                 physics: const BouncingScrollPhysics(),
+          //                 itemCount: snapshot.data!.length,
+          //                 itemBuilder: (context, index) {
+          //                   var data = snapshot.data![index];
+          //                   return Card(
+          //                     elevation: 7,
+          //                     child: ListTile(
+          //                       leading: GestureDetector(
+          //                         onTap: () {
+          //                           print("Object11");
+          //                           Navigator.push(
+          //                             context,
+          //                             MaterialPageRoute(
+          //                               builder: (_) => EnlargeImage(
+          //                                 profileImg: data.image,
+          //                               ),
+          //                             ),
+          //                           );
+          //                         },
+          //                         child: Container(
+          //                           width: 50.0,
+          //                           height: 50.0,
+          //                           decoration: BoxDecoration(
+          //                             shape: BoxShape.circle,
+          //                             image: DecorationImage(
+          //                               fit: BoxFit.fill,
+          //                               image: MemoryImage(
+          //                                 base64Decode("${data.image}"),
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       ),
+          //                       title: Column(
+          //                         crossAxisAlignment: CrossAxisAlignment.start,
+          //                         children: [
+          //                           Text(
+          //                             '${data.name}',
+          //                             style: const TextStyle(
+          //                               color: Colors.black,
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       subtitle: Column(
+          //                         crossAxisAlignment: CrossAxisAlignment.start,
+          //                         children: [
+          //                           Row(
+          //                             children: [
+          //                               Text('${data.gender}'),
+          //                               const SizedBox(
+          //                                 width: 10,
+          //                               ),
+          //                               Text("${data.age}"),
+          //                             ],
+          //                           ),
+          //                           GestureDetector(
+          //                             onTap: () async {
+          //                               if (data.resumePdf!.isEmpty && data.resumePdf == null) {
+          //                                 return;
+          //                               }
+          //                               createPdfPath("${data.resumePdf}");
+          //                             },
+          //                             child: const Text(
+          //                               "View Resume",
+          //                               style: TextStyle(
+          //                                 color: MyThemes.primary,
+          //                                 decoration: TextDecoration.underline,
+          //                               ),
+          //                             ),
+          //                           ),
+          //                         ],
+          //                       ),
+          //                       trailing: IconButton(
+          //                         onPressed: () {
+          //                           setState(() {
+          //                             SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
+          //                           });
+          //                         },
+          //                         icon: const Icon(Icons.delete),
+          //                       ),
+          //                     ),
+          //                   );
+          //                 },
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

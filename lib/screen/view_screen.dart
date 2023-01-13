@@ -19,16 +19,13 @@ class ViewScreen extends StatefulWidget {
 }
 
 class _ViewScreenState extends State<ViewScreen> {
-  final _formKey = GlobalKey<FormState>();
+  String? searchText;
+
   final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
   }
-
-  // Future<List<Resume>> findResume(String a) async {
-  //   // return await SQLHelper.findPerson(a);
-  // }
 
   Future<String> createPdfPath(String pdfFile) async {
     var decodedPdf = base64Decode(pdfFile);
@@ -43,6 +40,7 @@ class _ViewScreenState extends State<ViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: AppBar().preferredSize,
         child: AppBarWidget(
@@ -84,7 +82,8 @@ class _ViewScreenState extends State<ViewScreen> {
                     errorStyle: TextStyle(fontSize: 10),
                   ),
                   onChanged: (value) {
-                    value = value;
+                    searchText = value;
+                    setState(() {});
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -96,136 +95,139 @@ class _ViewScreenState extends State<ViewScreen> {
               ),
             ),
           ),
-          FutureBuilder<List<Resume>>(
-            future: SQLHelper.findPerson(),
-            builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("ERROR ${snapshot.error}"),
-                );
-              }
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Total: ',
-                          style: TextStyle(
-                            fontSize: 17,
+          Expanded(
+            child: FutureBuilder<List<Resume>>(
+              future: SQLHelper.personQuery(query: _searchController.text),
+              builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("ERROR ${snapshot.error}"),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Total: ',
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "${snapshot.data!.length}",
-                          style: const TextStyle(
-                            fontSize: 17,
+                          Text(
+                            "${snapshot.data!.length}",
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        var data = snapshot.data![index];
-                        return Card(
-                          elevation: 7,
-                          child: ListTile(
-                            leading: GestureDetector(
-                              onTap: () {
-                                print("Object11");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => EnlargeImage(
-                                      profileImg: data.image,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: 50.0,
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: MemoryImage(
-                                      base64Decode("${data.image}"),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data![index];
+                            return Card(
+                              elevation: 7,
+                              child: ListTile(
+                                leading: GestureDetector(
+                                  onTap: () {
+                                    print("Object11");
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EnlargeImage(
+                                          profileImg: data.image,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: MemoryImage(
+                                          base64Decode("${data.image}"),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${data.name}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${data.gender}'),
-                                    const SizedBox(
-                                      width: 10,
+                                    Text(
+                                      '${data.name}',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    Text("${data.age}"),
                                   ],
                                 ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    if (data.resumePdf!.isEmpty && data.resumePdf == null) {
-                                      return;
-                                    }
-                                    createPdfPath("${data.resumePdf}");
-                                  },
-                                  child: const Text(
-                                    // DateFormat("dd/MM/yyyy").format(data.createdTime ?? DateTime.now()),
-                                    "View Resume",
-                                    style: TextStyle(
-                                      color: MyThemes.primary,
-                                      decoration: TextDecoration.underline,
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text('${data.gender}'),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("${data.age}"),
+                                      ],
                                     ),
-                                  ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        if (data.resumePdf!.isEmpty && data.resumePdf == null) {
+                                          return;
+                                        }
+                                        createPdfPath("${data.resumePdf}");
+                                      },
+                                      child: const Text(
+                                        "View Resume",
+                                        style: TextStyle(
+                                          color: MyThemes.primary,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
-                                });
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
+                                    });
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

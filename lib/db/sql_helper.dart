@@ -30,9 +30,9 @@ class SQLHelper {
     Database db = await initializeSqlDB();
     var pr = [];
     if (query != null && query.isNotEmpty) {
-      await db.rawQuery("SELECT * FROM ${Query.resumeTable} WHERE name LIKE '%${query.toLowerCase()}%'");
+      pr = await db.rawQuery("SELECT * FROM ${Query.resumeTable} WHERE name LIKE '%${query.toLowerCase()}%'");
     } else {
-      await db.query(Query.resumeTable);
+      pr = await db.query(Query.resumeTable);
     }
     return pr.map((e) => Resume.fromJson(e)).toList();
   }

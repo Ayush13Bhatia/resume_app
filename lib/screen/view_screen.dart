@@ -50,11 +50,12 @@ class _ViewScreenState extends State<ViewScreen> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
               height: 70,
               width: double.maxFinite,
               child: Card(
@@ -94,200 +95,237 @@ class _ViewScreenState extends State<ViewScreen> {
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (_, i) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
-                  child: Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(''),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Column(
+
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0, top: 6.0),
+              child: Row(
+                children: const [
+                  Text('Total:'),
+                  SizedBox(
+                    width: 3,
+                  ),
+                  Text('0'),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: FutureBuilder(
+                future: SQLHelper.personQuery(query: _searchController.text),
+                builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("ERROR ${snapshot.hasError}"),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (_, i) {
+                      final data = snapshot.data![i];
+                      return Card(
+                        elevation: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Ayushi"),
-                              const SizedBox(
-                                height: 8,
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.asset(''),
+                                ),
                               ),
-                              Row(
-                                children: const [
-                                  Text("M  |"),
-                                  SizedBox(
-                                    width: 5,
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${data.name}'),
+                                  const SizedBox(
+                                    height: 8,
                                   ),
-                                  Text('21')
+                                  Row(
+                                    children: [
+                                      Text("${data.gender}  |"),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text('${data.age}')
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (data.resumePdf == null && data.resumePdf!.isEmpty) {
+                                        return;
+                                      }
+                                      createPdfPath('${data.resumePdf}');
+                                    },
+                                    child: const Text(
+                                      "View Resume",
+                                      style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
+                                    ),
+                                  )
                                 ],
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Text(
-                                "View Resume",
-                                style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
                               )
                             ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
 
-          // Expanded(
-          //   child: FutureBuilder<List<Resume>>(
-          //     future: SQLHelper.personQuery(query: _searchController.text),
-          //     builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         return const Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       }
-          //       if (snapshot.hasError) {
-          //         return Center(
-          //           child: Text("ERROR ${snapshot.error}"),
-          //         );
-          //       }
-          //       return Padding(
-          //         padding: const EdgeInsets.all(8.0),
-          //         child: Column(
-          //           children: [
-          //             const SizedBox(
-          //               height: 7,
-          //             ),
-          //             Row(
-          //               children: [
-          //                 const Text(
-          //                   'Total: ',
-          //                   style: TextStyle(
-          //                     fontSize: 17,
-          //                   ),
-          //                 ),
-          //                 Text(
-          //                   "${snapshot.data!.length}",
-          //                   style: const TextStyle(
-          //                     fontSize: 17,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             const SizedBox(
-          //               height: 15,
-          //             ),
-          //             Expanded(
-          //               child: ListView.builder(
-          //                 physics: const BouncingScrollPhysics(),
-          //                 itemCount: snapshot.data!.length,
-          //                 itemBuilder: (context, index) {
-          //                   var data = snapshot.data![index];
-          //                   return Card(
-          //                     elevation: 7,
-          //                     child: ListTile(
-          //                       leading: GestureDetector(
-          //                         onTap: () {
-          //                           print("Object11");
-          //                           Navigator.push(
-          //                             context,
-          //                             MaterialPageRoute(
-          //                               builder: (_) => EnlargeImage(
-          //                                 profileImg: data.image,
-          //                               ),
-          //                             ),
-          //                           );
-          //                         },
-          //                         child: Container(
-          //                           width: 50.0,
-          //                           height: 50.0,
-          //                           decoration: BoxDecoration(
-          //                             shape: BoxShape.circle,
-          //                             image: DecorationImage(
-          //                               fit: BoxFit.fill,
-          //                               image: MemoryImage(
-          //                                 base64Decode("${data.image}"),
-          //                               ),
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                       title: Column(
-          //                         crossAxisAlignment: CrossAxisAlignment.start,
-          //                         children: [
-          //                           Text(
-          //                             '${data.name}',
-          //                             style: const TextStyle(
-          //                               color: Colors.black,
-          //                             ),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                       subtitle: Column(
-          //                         crossAxisAlignment: CrossAxisAlignment.start,
-          //                         children: [
-          //                           Row(
-          //                             children: [
-          //                               Text('${data.gender}'),
-          //                               const SizedBox(
-          //                                 width: 10,
-          //                               ),
-          //                               Text("${data.age}"),
-          //                             ],
-          //                           ),
-          //                           GestureDetector(
-          //                             onTap: () async {
-          //                               if (data.resumePdf!.isEmpty && data.resumePdf == null) {
-          //                                 return;
-          //                               }
-          //                               createPdfPath("${data.resumePdf}");
-          //                             },
-          //                             child: const Text(
-          //                               "View Resume",
-          //                               style: TextStyle(
-          //                                 color: MyThemes.primary,
-          //                                 decoration: TextDecoration.underline,
-          //                               ),
-          //                             ),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                       trailing: IconButton(
-          //                         onPressed: () {
-          //                           setState(() {
-          //                             SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
-          //                           });
-          //                         },
-          //                         icon: const Icon(Icons.delete),
-          //                       ),
-          //                     ),
-          //                   );
-          //                 },
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
-        ],
+            // Expanded(
+            //   child: FutureBuilder<List<Resume>>(
+            //     future: SQLHelper.personQuery(query: _searchController.text),
+            //     builder: (_, AsyncSnapshot<List<Resume>> snapshot) {
+            //       if (snapshot.connectionState == ConnectionState.waiting) {
+            //         return const Center(
+            //           child: CircularProgressIndicator(),
+            //         );
+            //       }
+            //       if (snapshot.hasError) {
+            //         return Center(
+            //           child: Text("ERROR ${snapshot.error}"),
+            //         );
+            //       }
+            //       return Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Column(
+            //           children: [
+            //             const SizedBox(
+            //               height: 7,
+            //             ),
+            //             Row(
+            //               children: [
+            //                 const Text(
+            //                   'Total: ',
+            //                   style: TextStyle(
+            //                     fontSize: 17,
+            //                   ),
+            //                 ),
+            //                 Text(
+            //                   "${snapshot.data!.length}",
+            //                   style: const TextStyle(
+            //                     fontSize: 17,
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //             const SizedBox(
+            //               height: 15,
+            //             ),
+            //             Expanded(
+            //               child: ListView.builder(
+            //                 physics: const BouncingScrollPhysics(),
+            //                 itemCount: snapshot.data!.length,
+            //                 itemBuilder: (context, index) {
+            //                   var data = snapshot.data![index];
+            //                   return Card(
+            //                     elevation: 7,
+            //                     child: ListTile(
+            //                       leading: GestureDetector(
+            //                         onTap: () {
+            //                           print("Object11");
+            //                           Navigator.push(
+            //                             context,
+            //                             MaterialPageRoute(
+            //                               builder: (_) => EnlargeImage(
+            //                                 profileImg: data.image,
+            //                               ),
+            //                             ),
+            //                           );
+            //                         },
+            //                         child: Container(
+            //                           width: 50.0,
+            //                           height: 50.0,
+            //                           decoration: BoxDecoration(
+            //                             shape: BoxShape.circle,
+            //                             image: DecorationImage(
+            //                               fit: BoxFit.fill,
+            //                               image: MemoryImage(
+            //                                 base64Decode("${data.image}"),
+            //                               ),
+            //                             ),
+            //                           ),
+            //                         ),
+            //                       ),
+            //                       title: Column(
+            //                         crossAxisAlignment: CrossAxisAlignment.start,
+            //                         children: [
+            //                           Text(
+            //                             '${data.name}',
+            //                             style: const TextStyle(
+            //                               color: Colors.black,
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                       subtitle: Column(
+            //                         crossAxisAlignment: CrossAxisAlignment.start,
+            //                         children: [
+            //                           Row(
+            //                             children: [
+            //                               Text('${data.gender}'),
+            //                               const SizedBox(
+            //                                 width: 10,
+            //                               ),
+            //                               Text("${data.age}"),
+            //                             ],
+            //                           ),
+            //                           GestureDetector(
+            //                             onTap: () async {
+            //                               if (data.resumePdf!.isEmpty && data.resumePdf == null) {
+            //                                 return;
+            //                               }
+            //                               createPdfPath("${data.resumePdf}");
+            //                             },
+            //                             child: const Text(
+            //                               "View Resume",
+            //                               style: TextStyle(
+            //                                 color: MyThemes.primary,
+            //                                 decoration: TextDecoration.underline,
+            //                               ),
+            //                             ),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                       trailing: IconButton(
+            //                         onPressed: () {
+            //                           setState(() {
+            //                             SQLHelper.deleteItem(int.parse('${snapshot.data![index].id}'));
+            //                           });
+            //                         },
+            //                         icon: const Icon(Icons.delete),
+            //                       ),
+            //                     ),
+            //                   );
+            //                 },
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }

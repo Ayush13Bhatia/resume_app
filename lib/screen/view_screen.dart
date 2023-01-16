@@ -96,21 +96,19 @@ class _ViewScreenState extends State<ViewScreen> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0, top: 6.0),
-              child: Row(
-                children: const [
-                  Text('Total:'),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  Text('0'),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 4.0, top: 6.0),
+            //   child: Row(
+            //     children: [
+            //       const Text('Total:'),
+            //       const SizedBox(
+            //         width: 3,
+            //       ),
+            //       Text('${SQLHelper.countResumeTable()}'),
+            //     ],
+            //   ),
+            // ),
+
             Expanded(
               child: FutureBuilder(
                 future: SQLHelper.personQuery(query: _searchController.text),
@@ -125,66 +123,89 @@ class _ViewScreenState extends State<ViewScreen> {
                       child: Text("ERROR ${snapshot.hasError}"),
                     );
                   }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (_, i) {
-                      final data = snapshot.data![i];
-                      return Card(
-                        elevation: 8,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(''),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${data.name}'),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text("${data.gender}  |"),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text('${data.age}')
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (data.resumePdf == null && data.resumePdf!.isEmpty) {
-                                        return;
-                                      }
-                                      createPdfPath('${data.resumePdf}');
-                                    },
-                                    child: const Text(
-                                      "View Resume",
-                                      style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0, bottom: 4.0, right: 10.0),
+                        child: Row(
+                          children: [
+                            const Text('Total:'),
+                            const SizedBox(
+                              width: 3,
+                            ),
+                            Text('${snapshot.data!.length}'),
+                          ],
                         ),
-                      );
-                    },
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (_, i) {
+                            final data = snapshot.data![i];
+                            return Column(
+                              children: [
+                                Card(
+                                  elevation: 8,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: 50,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: Image.asset(''),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text('${data.name}'),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text("${data.gender}  |"),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text('${data.age}')
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (data.resumePdf == null && data.resumePdf!.isEmpty) {
+                                                  return;
+                                                }
+                                                createPdfPath('${data.resumePdf}');
+                                              },
+                                              child: const Text(
+                                                "View Resume",
+                                                style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),

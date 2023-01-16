@@ -37,6 +37,12 @@ class SQLHelper {
     return pr.map((e) => Resume.fromJson(e)).toList();
   }
 
+  static Future<void> countResumeTable() async {
+    Database db = await initializeSqlDB();
+    var cnt = await db.rawQuery('SELECT COUNT(id) FROM ${Query.resumeTable}');
+    // return cnt;
+  }
+
   static Future<List<Resume>> findPerson() async {
     Database db = await initializeSqlDB();
     final pr = await db.query(Query.resumeTable);

@@ -96,18 +96,23 @@ class _ViewScreenState extends State<ViewScreen> {
               ),
             ),
 
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 4.0, top: 6.0),
-            //   child: Row(
-            //     children: [
-            //       const Text('Total:'),
-            //       const SizedBox(
-            //         width: 3,
-            //       ),
-            //       Text('${SQLHelper.countResumeTable()}'),
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0, top: 6.0),
+              child: Row(
+                children: [
+                  const Text('Total:'),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  FutureBuilder<int>(
+                    future: SQLHelper.countResumeTable(),
+                    builder: (context, snap) {
+                      return Text('${snap.data}');
+                    },
+                  ),
+                ],
+              ),
+            ),
 
             Expanded(
               child: FutureBuilder(

@@ -143,7 +143,7 @@ class _ViewScreenState extends State<ViewScreen> {
                                           width: 50,
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(20),
-                                            child: Image.asset(''),
+                                            child: Image.asset('assets/images/dummy.png'),
                                           ),
                                         ),
                                         const SizedBox(

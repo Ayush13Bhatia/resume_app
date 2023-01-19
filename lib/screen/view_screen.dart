@@ -139,11 +139,25 @@ class _ViewScreenState extends State<ViewScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          height: 50,
-                                          width: 50,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(20),
-                                            child: Image.asset('assets/images/dummy.png'),
+                                          width: 50.0,
+                                          height: 50.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: data.image == null
+                                                ? const DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: AssetImage(
+                                                      'assets/images/dummy.png',
+                                                    ),
+                                                  )
+                                                : DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: MemoryImage(
+                                                      base64Decode(
+                                                        '${data.image}',
+                                                      ),
+                                                    ),
+                                                  ),
                                           ),
                                         ),
                                         const SizedBox(
@@ -169,15 +183,16 @@ class _ViewScreenState extends State<ViewScreen> {
                                               height: 8,
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                if (data.resumePdf == null && data.resumePdf!.isEmpty) {
-                                                  return;
-                                                }
-                                                createPdfPath('${data.resumePdf}');
-                                              },
-                                              child: const Text(
+                                              onTap: (data.resumePdf == null)
+                                                  ? null
+                                                  : () {
+                                                      createPdfPath('${data.resumePdf}');
+                                                    },
+                                              child: Text(
                                                 "View Resume",
-                                                style: TextStyle(color: MyThemes.primary, decoration: TextDecoration.underline),
+                                                style: TextStyle(
+                                                    color: (data.resumePdf == null) ? MyThemes.grey : MyThemes.primary,
+                                                    decoration: TextDecoration.underline),
                                               ),
                                             )
                                           ],

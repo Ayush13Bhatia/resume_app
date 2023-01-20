@@ -138,26 +138,41 @@ class _ViewScreenState extends State<ViewScreen> {
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: data.image == null
-                                                ? const DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: AssetImage(
-                                                      'assets/images/dummy.png',
-                                                    ),
-                                                  )
-                                                : DecorationImage(
-                                                    fit: BoxFit.fill,
-                                                    image: MemoryImage(
-                                                      base64Decode(
-                                                        '${data.image}',
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (data.image == null) {
+                                              return;
+                                            }
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => EnlargeImage(
+                                                  profileImg: '${data.image}',
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: data.image == null
+                                                  ? const DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: AssetImage(
+                                                        'assets/images/dummy.png',
+                                                      ),
+                                                    )
+                                                  : DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: MemoryImage(
+                                                        base64Decode(
+                                                          '${data.image}',
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(

@@ -211,6 +211,19 @@ class _ViewScreenState extends State<ViewScreen> {
                                               ),
                                             )
                                           ],
+                                        ),
+                                        const Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 18.0, right: 10),
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                SQLHelper.deleteItem(int.parse('${data.id}'));
+                                                setState(() {});
+                                              },
+                                              child: const Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              )),
                                         )
                                       ],
                                     ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:resume_app1/controller/logics.dart';
 import 'package:resume_app1/utils/my_themes.dart';
 import '../components/enlarge_image.dart';
 import '../db/sql_helper.dart';
@@ -25,16 +26,6 @@ class _ViewScreenState extends State<ViewScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<String> createPdfPath(String pdfFile) async {
-    var decodedPdf = base64Decode(pdfFile);
-    final output = (await getApplicationDocumentsDirectory()).path;
-    final file = File("${output}" + DateTime.now().millisecondsSinceEpoch.toString() + '.pdf');
-    await file.writeAsBytes(decodedPdf.buffer.asUint8List());
-
-    await OpenFilex.open(file.path);
-    return file.path;
   }
 
   @override
@@ -201,7 +192,7 @@ class _ViewScreenState extends State<ViewScreen> {
                                               onTap: (data.resumePdf == null)
                                                   ? null
                                                   : () {
-                                                      createPdfPath('${data.resumePdf}');
+                                                      Logics().createPdfPath('${data.resumePdf}');
                                                     },
                                               child: Text(
                                                 "View Resume",

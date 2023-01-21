@@ -14,6 +14,7 @@ import '../components/drop_down_widget.dart';
 import '../components/resume_text_form_widget.dart';
 import '../components/show_date_widget.dart';
 import '../components/star_form_widget.dart';
+import '../controller/logics.dart';
 import '../db/sql_helper.dart';
 
 import '../model/resume_model.dart';
@@ -47,19 +48,6 @@ class _AddScreenState extends State<AddScreen> {
 
   List<String> dropList = ['Male', 'Female'];
   List<String> dropList1 = ['Frontend Developer', 'Backend Developer'];
-
-  convertBaseImage(List<String> extensions) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: extensions,
-    );
-    if (result != null) {
-      PlatformFile? files = result.files.first;
-      final bytes = await File(files.path ?? "").readAsBytes();
-      String img64 = base64Encode(bytes);
-      return img64;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +168,7 @@ class _AddScreenState extends State<AddScreen> {
                 BorderDotted(
                   borderName: "Upload PDF",
                   onTap: () async {
-                    String profileImg = await convertBaseImage(['pdf']);
+                    String profileImg = await Logics().convertBaseImage(['pdf']);
                     setState(() {
                       resumePdf = profileImg;
                     });
@@ -196,7 +184,7 @@ class _AddScreenState extends State<AddScreen> {
                 BorderDotted(
                   borderName: "Upload Photo",
                   onTap: () async {
-                    String profileImg = await convertBaseImage(['jpg', 'png']);
+                    String profileImg = await Logics().convertBaseImage(['jpg', 'png']);
                     setState(() {
                       profilePic = profileImg;
                     });

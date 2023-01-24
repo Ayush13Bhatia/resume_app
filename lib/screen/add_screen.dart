@@ -181,14 +181,48 @@ class _AddScreenState extends State<AddScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-                BorderDotted(
-                  borderName: "Upload Photo",
-                  onTap: () async {
-                    String profileImg = await Logics().convertBaseImage(['jpg', 'png']);
-                    setState(() {
-                      profilePic = profileImg;
-                    });
-                  },
+                Visibility(
+                  visible: profilePic != null,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: Image(
+                          image: MemoryImage(
+                            base64Decode(
+                              profilePic.toString(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            profilePic = null;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: profilePic == null,
+                  child: BorderDotted(
+                    borderName: "Upload Photo",
+                    onTap: () async {
+                      String profileImg = await Logics().convertBaseImage(['jpg', 'png']);
+                      setState(() {
+                        profilePic = profileImg;
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 20,

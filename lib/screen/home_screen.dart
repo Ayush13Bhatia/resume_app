@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:resume_app1/components/elevation_button_widget.dart';
 import 'package:resume_app1/utils/my_themes.dart';
 import '../db/sql_helper.dart';
@@ -38,15 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: const [
             ElevationButtonWidget(
-              onPressed: () => Get.to(const AddScreen()),
+              // onPressed: () => Get.to(const AddScreen()),
               icon: Icons.add,
               backgroundColor: MyThemes.white,
               textStyleColor: MyThemes.primary,
             ),
             ElevationButtonWidget(
-              onPressed: () => Get.to(const ViewScreen()),
+              // onPressed: () => Get.to(const ViewScreen()),
               text: "VIEW",
             ),
           ],

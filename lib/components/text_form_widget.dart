@@ -17,12 +17,13 @@ class TextFormWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
           child: TextFormField(
-            // validator: (value) {
-            //   if (value == null || value.isEmpty) {
-            //     return "Please enter the text";
-            //   }
-            //   return null;
-            // },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter the text";
+              }
+              return null;
+            },
             controller: controller,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),

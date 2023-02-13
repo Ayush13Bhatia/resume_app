@@ -6,13 +6,16 @@ class DropDownWidget extends StatelessWidget {
   final Function(String?)? onChange;
   final String? textValue;
   final List<String> dropList;
-  const DropDownWidget({Key? key, this.dropList = const [], this.hintText, this.textValue, this.value, this.onChange}) : super(key: key);
+  final String? Function(dynamic)? validation;
+  const DropDownWidget({Key? key, this.validation, this.dropList = const [], this.hintText, this.textValue, this.value, this.onChange})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FormField(
+          validator: validation,
           builder: (FormFieldState state) {
             return InputDecorator(
               decoration: InputDecoration(

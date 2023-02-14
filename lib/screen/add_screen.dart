@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:resume_app1/components/elevation_button_widget.dart';
+import 'package:resume_app1/screen/view_screen.dart';
 import 'package:resume_app1/utils/my_themes.dart';
 
 import '../components/app_bar_widget.dart';
@@ -74,6 +73,7 @@ class _AddScreenState extends State<AddScreen> {
                     ),
                   );
                 }
+                Get.to(const ViewScreen());
               },
               child: const Icon(
                 Icons.add,
@@ -266,6 +266,7 @@ class _AddScreenState extends State<AddScreen> {
                             ),
                           );
                         }
+                        Get.to(const ViewScreen());
                       },
                       padding: const EdgeInsets.all(1.5),
                       showIcon: false,
